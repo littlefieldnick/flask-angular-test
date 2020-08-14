@@ -1,0 +1,62 @@
+<mat-toolbar color="primary">
+  <span>Place Matters</span>
+</mat-toolbar>
+
+<div fxLayout="row wrap" fxLayout.sm="column" style="margin-left:10px; margin-right: 10px">
+  <div fxFlex.lt-xl="25%" fxFlex.lt-sm="100%" [fxHide]="mapOpen">
+    <h3 style="text-align: center; padding-top:10px">Search</h3>
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <div *ngFor="let control of searchForm.formControls">
+        <mat-form-field fxFlex="100%">
+          <mat-label>{{control.label}}</mat-label>
+          <div *ngIf="control.modelProperty == 'category'; else inputBlock">
+            <mat-select formControlName="{{control.modelProperty}}">
+              <mat-option value="" selected></mat-option>
+              <mat-option *ngFor="let cat of categories" value="{{cat.name}}">{{cat.name}}</mat-option>
+            </mat-select>
+          </div>
+          <ng-template #inputBlock>
+            <input type="text" matInput formControlName="{{control.modelProperty}}">
+          </ng-template>
+        </mat-form-field>
+      </div>
+      <div fxLayout="column">
+        <button mat-raised-button color="primary" type="submit">Search</button>
+        <br/>
+        <button mat-raised-button class="reset" (click)="this.resetSearchForm()">Reset</button>
+      </div>
+    </form>
+    <cdk-virtual-scroll-viewport itemSize="50" class="map-list-viewport">
+      <div *cdkVirtualFor="let resource of resources">
+        <mat-card>
+          <mat-card-content>
+            <h2>{{resource.name}}</h2>
+            <h4>{{resource.address}}</h4>
+            <mat-chip-list>
+              <mat-chip color="accent" selected>
+                {{resource.category}}
+              </mat-chip>
+            </mat-chip-list>
+            <br>
+            <button mat-raised-button color="primary">More Information</button>
+          </mat-card-content>
+        </mat-card>
+        <hr>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+      <div fxLayout="row" fxFlex.lt-xl="75%" fxFlex.lt-sm="100%" [fxShow.lt-sm]="mapOpen" style="padding-left: 10px">
+        <agm-map [latitude]="resources[0].latitude" [longitude]="resources[0].longitude" [zoom]="zoom">
+          <agm-marker *ngFor="let resource of resources" [latitude]="resource.latitude" [longitude]="resource.longitude">
+            <agm-info-window>
+              {{resource.name}}
+              {{resource.address}}
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div fxLayout="column" fxFlex.lt-md="100%" fxHide.gt-sm="true">
+        <br>
+        <button mat-raised-button color="primary" (click)="toggleMap()">Show Map</button>
+      </div>
+</div>

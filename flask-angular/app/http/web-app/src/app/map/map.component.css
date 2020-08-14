@@ -1,0 +1,16 @@
+agm-map {
+  height: 650px;
+  width: 100%;
+}
+
+.map-list-viewport{
+  height: 375px;
+  width: 100%;
+  display: flex;
+  margin-right: 10px;
+}
+
+.reset {
+  background-color: darkslategrey;
+  color:white;
+}

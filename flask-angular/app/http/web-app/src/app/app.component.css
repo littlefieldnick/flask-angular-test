@@ -1,0 +1,16 @@
+agm-map {
+  height: 700px;
+  width: 100%;
+}
+
+.map-list-viewport{
+  height: 500px;
+  width: 100%;
+  display: flex;
+  margin-right: 10px;
+}
+
+.block {
+  padding-bottom: 4px;
+  width: 100%;
+}
